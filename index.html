@@ -48,25 +48,25 @@
         display:grid;
         justify-items: center;
         align-items: center;
-      }
-      .startbutton {
-        background-color: #3e8615;
-        border-radius: 8px;
-        box-shadow: 0 0 5px 0 grey;
-        color: white;        
-        cursor: pointer;
-        display:grid;
-        justify-items: center;
-        align-items: center;
-        font-size: 25px;
-      }
-        
+      }        
 
     </style>
   </head>
   <body>
     <h1 style="text-align: center;" >Black Jack</h1>
-    <button onclick="startGame()"class= "startbutton">Start Game!</button>
+    <p> Objective: get as close to 21 to beat the dealer. </p>
+    <ol id=directions class="hidden">
+        <li>Player clicks <strong>HIT</strong> to add another card to hand.</li>
+        <li>Player clicks <strong>STAND </strong>when their turn is done.</li>
+        <li>Dealer (player 2) clicks <strong>HIT</strong> to add another card to hand.</li>
+        <li> Dealer clicks <strong>STAND</strong> to end the round and see who won!</li>
+        <li>Click Start to begin :) </li>
+    </ol>
+    <div class="playArea"> 
+     <div><button onclick="showDirections()"class= "hitbutton ">Directions? </button> </div>
+     <div><button onclick="startGame()"class= "standbutton">Start Game!</button> </div>  
+    </div>
+
             <div> <h2>Dealer</h2></div>
         
         <div id="dealer" class="playArea">            
@@ -99,13 +99,16 @@
 
   </body>
   <script>
+      // show directions 
+      function showDirections(){
+          document.getElementById("directions").classList.toggle("hidden")
+      }
+
+    // build deck
       var deck =[]
       var dealerCards =[]
-      var playerCards =[]
-      
-      var playerStand= false
-      var dealerStand= false
-      // build deck
+      var playerCards =[]      
+    
       function buildDeck() {
       var suits = ['heart', 'spade', 'diamond', 'club']
       var values = [1,2,3,4,5,6,7,8,9,10,11,12,13]
@@ -136,9 +139,7 @@
 
       return result
     }
-
-    deck.sort(sortFunc)
-
+    deck.sort(sortFunc) 
     return deck
   }
   // start game 
@@ -158,12 +159,9 @@
       dealerCards=get2Cards();
       
       displayCards()
-      
-      //setTimeout(declareWinner, 1000)
-      //setTimeout(restart,2000)
     }
 
-    // deal cards 
+    // deal first two cards 
     function get2Cards() {
       var card1 = deck.shift()
       var card2 = deck.shift()
@@ -171,7 +169,7 @@
       var cards = [card1, card2]   
       return cards
     }
-    // display Cards
+    // display first two Cards
     function displayCards(){
         
       var dealerCard0 = dealerCards[0]
@@ -217,7 +215,7 @@
       document.getElementById("DealWon").innerHTML = message
       
     }
-
+    // restart Game ...clear cards 
     function restart(){
         var answer =confirm("Would you like to play again? Press OK to restart the game!")
         if (answer){
@@ -228,10 +226,7 @@
             document.getElementById("dealer4").classList.add('hidden')   
             document.getElementById("player3").classList.add('hidden')
             document.getElementById("player4").classList.add('hidden')   
-            startGame()
-            
-
-
+            startGame()          
         }
         else {
             alert("Thanks for Playing")
@@ -246,7 +241,7 @@
         }
     }
 
-// Player Buttons
+// Player Buttons (hit- add another card)
     function player_hit(){
         var newCard=deck.shift()
         playerCards.push(newCard)
@@ -264,7 +259,8 @@
     function player_stand(){
         playerStand=true         
     }
-// Dealer Buttons
+// Dealer Buttons 
+// hit adds another card to hand 
 function dealer_hit(){
         var newCard=deck.shift()
         dealerCards.push(newCard)
@@ -279,14 +275,12 @@ function dealer_hit(){
             document.getElementById("dealer4").innerHTML=newCard.value +' of ' + newCard.suit
         }
     }
+
+    // Dealer Stand Button -- ends game, declares winner, asks restart 
     function dealer_stand(){
         setTimeout(declareWinner, 1000)
         setTimeout(restart,2000)
-
-    }
-
-
-    
+    }   
 
   </script>
 </html>
