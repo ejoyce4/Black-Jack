@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+      <title>Black Jack Game</title>
     <style>
         .main {
             display: grid;
@@ -21,20 +22,51 @@
             justify-items: center;
 
         }
-        .buttons{
+        .buttonColumn{
             display: grid;
             grid-template-rows: 1fr 1fr;
         }
         .hidden{
             display: none;
         }
+        .hitbutton {
+        background-color: teal;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 0 grey;
+        color: white;        
+        cursor: pointer;
+        display:grid;
+        justify-items: center;
+        align-items: center;
+      }
+      .standbutton {
+        background-color: #B27499;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 0 grey;
+        color: white;        
+        cursor: pointer;
+        display:grid;
+        justify-items: center;
+        align-items: center;
+      }
+      .startbutton {
+        background-color: #3e8615;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 0 grey;
+        color: white;        
+        cursor: pointer;
+        display:grid;
+        justify-items: center;
+        align-items: center;
+        font-size: 25px;
+      }
         
 
     </style>
   </head>
   <body>
-    <h1>Black Jack</h1>
-    <button onclick="startGame()">Start Game!</button>
+    <h1 style="text-align: center;" >Black Jack</h1>
+    <button onclick="startGame()"class= "startbutton">Start Game!</button>
             <div> <h2>Dealer</h2></div>
         
         <div id="dealer" class="playArea">            
@@ -42,9 +74,9 @@
             <div id="dealer2" class="card"></div>
             <div id="dealer3" class="card hidden"></div>
             <div id="dealer4" class="card hidden"></div>
-            <div class = 'buttons'>
-                <button onclick="dealer_hit()">HIT </button>
-                <button onclick="dealer_stand()">STAND </button>
+            <div class = 'buttonColumn'>
+                <button onclick="dealer_hit()" class ='hitbutton'>HIT </button>
+                <button onclick="dealer_stand()" class ='standbutton'>STAND </button>
             </div>
         </div>
         <div> <h2> Player </h2></div>
@@ -53,9 +85,9 @@
             <div id="player2" class="card"></div>
             <div id="player3" class="card hidden"></div>
             <div id="player4" class="card hidden"></div>
-            <div class = 'buttons'>
-                <button onclick="player_hit()">HIT </button>
-                <button onclick="player_stand()">STAND </button>
+            <div class = 'buttonColumn'>
+                <button onclick="player_hit()"  class ='hitbutton'>HIT </button>
+                <button onclick="player_stand()" class ='standbutton'>STAND </button>
             </div>
             
         
