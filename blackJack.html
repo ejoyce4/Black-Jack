@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr ;
+        }
+        .playArea{
+            display: grid;
+            grid-template-columns: 120px 120px 120px 120px 120px auto  ;
+
+        }
+        .card{
+            height: 180px;
+            width: 100px;
+            border: thick solid black;
+            border-radius: 16px;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+
+        }
+        .buttons{
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+        }
+        .hidden{
+            display: none;
+        }
+        
+
+    </style>
+  </head>
+  <body>
+    <h1>Black Jack</h1>
+    <button onclick="startGame()">Start Game!</button>
+            <div> <h2>Dealer</h2></div>
+        
+        <div id="dealer" class="playArea">            
+            <div id="dealer1" class="card"></div>
+            <div id="dealer2" class="card"></div>
+            <div id="dealer3" class="card hidden"></div>
+            <div id="dealer4" class="card hidden"></div>
+            <div class = 'buttons'>
+                <button onclick="dealer_hit()">HIT </button>
+                <button onclick="dealer_stand()">STAND </button>
+            </div>
+        </div>
+        <div> <h2> Player </h2></div>
+        <div id= "player" class="playArea">            
+            <div id="player1" class="card"></div>
+            <div id="player2" class="card"></div>
+            <div id="player3" class="card hidden"></div>
+            <div id="player4" class="card hidden"></div>
+            <div class = 'buttons'>
+                <button onclick="player_hit()">HIT </button>
+                <button onclick="player_stand()">STAND </button>
+            </div>
+            
+        
+        </div>
+        <div><h2 id="DealWon" ></h2></div>
+        <div><h2 id="PlayWon" ></h2></div>
+    </div>
+    
+
+  </body>
+  <script>
+      var deck =[]
+      var dealerCards =[]
+      var playerCards =[]
+      
+      var playerStand= false
+      var dealerStand= false
+      // build deck
+      function buildDeck() {
+      var suits = ['heart', 'spade', 'diamond', 'club']
+      var values = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+        
+      suits.forEach((suit) => {
+        values.forEach((value) => {
+
+          var card = {
+            suit: suit,
+            value: value,
+          }
+          deck.push(card)
+        })
+      })
+      return deck
+    }
+
+    // sort Deck 
+    function shuffle(deck){
+    var sortFunc = (card1, card2) => { 
+      var result
+
+      if ( Math.random() > .5 ) {
+        result = 1
+      } else {
+        result = -1
+      }
+
+      return result
+    }
+
+    deck.sort(sortFunc)
+
+    return deck
+  }
+  // start game 
+  function startGame(){
+    deck =[]
+    dealerCards =[]
+    playerCards =[]
+      
+    playerStand= false
+    dealerStand= false
+
+      var newDeck = buildDeck()
+      var shuffledNewDeck = shuffle(newDeck)
+      deck = shuffledNewDeck
+
+      playerCards=get2Cards();
+      dealerCards=get2Cards();
+      
+      displayCards()
+      
+      //setTimeout(declareWinner, 1000)
+      //setTimeout(restart,2000)
+    }
+
+    // deal cards 
+    function get2Cards() {
+      var card1 = deck.shift()
+      var card2 = deck.shift()
+      
+      var cards = [card1, card2]   
+      return cards
+    }
+    // display Cards
+    function displayCards(){
+        
+      var dealerCard0 = dealerCards[0]
+      document.getElementById("dealer1").innerHTML = dealerCard0.value + " of " + dealerCard0.suit
+
+      var dealerCard1 = dealerCards[1]
+      document.getElementById("dealer2").innerHTML = dealerCard1.value + " of " + dealerCard1.suit
+
+      var playerCard0 = playerCards[0]
+      document.getElementById("player1").innerHTML = playerCard0.value + " of " + playerCard0.suit
+
+      var playerCard1 = playerCards[1]
+      document.getElementById("player2").innerHTML = playerCard1.value + " of " + playerCard1.suit
+
+    }
+    // determine winner
+    function declareWinner() {
+      var dealerTotal = 0
+      var playerTotal = 0
+
+      dealerCards.forEach((card) => {
+        dealerTotal = dealerTotal + card.value
+      })
+
+      playerCards.forEach((card) => {
+        playerTotal = playerTotal + card.value
+      })
+
+      var message
+      if (playerTotal <= 21 && dealerTotal >21){
+          message = "You won! Player beats dealer, " + playerTotal + " to Bust!"
+      }
+      else if (playerTotal > 21 && dealerTotal <= 21){
+        message = "Better luck next time. Dealer won " + dealerTotal + " to Bust"
+      }        
+      else if (playerTotal > dealerTotal) {
+        message = "You won! Player beats dealer, " + playerTotal + " to " + dealerTotal + "."
+      }              
+      else {
+            message = "Better luck next time. Dealer won " + dealerTotal + " to " + playerTotal + "."
+      }     
+            
+      document.getElementById("DealWon").innerHTML = message
+      
+    }
+
+    function restart(){
+        var answer =confirm("Would you like to play again? Press OK to restart the game!")
+        if (answer){
+            
+            document.getElementById("PlayWon").innerHTML= '  '
+            document.getElementById("DealWon").innerHTML = '  '
+            document.getElementById("dealer3").classList.add('hidden')
+            document.getElementById("dealer4").classList.add('hidden')   
+            document.getElementById("player3").classList.add('hidden')
+            document.getElementById("player4").classList.add('hidden')   
+            startGame()
+            
+
+
+        }
+        else {
+            alert("Thanks for Playing")
+            document.getElementById("dealer1").classList.add('hidden')
+            document.getElementById("dealer2").classList.add('hidden')   
+            document.getElementById("player1").classList.add('hidden')
+            document.getElementById("player2").classList.add('hidden') 
+            document.getElementById("dealer3").classList.add('hidden')
+            document.getElementById("dealer4").classList.add('hidden')   
+            document.getElementById("player3").classList.add('hidden')
+            document.getElementById("player4").classList.add('hidden') 
+        }
+    }
+
+// Player Buttons
+    function player_hit(){
+        var newCard=deck.shift()
+        playerCards.push(newCard)
+        console.log(playerCards)
+
+        if (playerCards.length==3){
+            document.getElementById("player3").classList.remove('hidden')
+            document.getElementById("player3").innerHTML=newCard.value +' of ' + newCard.suit
+        }
+        else if(playerCards.length==4) {
+            document.getElementById("player4").classList.remove("hidden")
+            document.getElementById("player4").innerHTML=newCard.value +' of ' + newCard.suit
+        }
+    }
+    function player_stand(){
+        playerStand=true         
+    }
+// Dealer Buttons
+function dealer_hit(){
+        var newCard=deck.shift()
+        dealerCards.push(newCard)
+        
+
+        if (dealerCards.length==3){
+            document.getElementById("dealer3").classList.toggle("hidden")
+            document.getElementById("dealer3").innerHTML=newCard.value +' of ' + newCard.suit
+        }
+        else if(dealerCards.length==4) {
+            document.getElementById("dealer4").classList.toggle("hidden")
+            document.getElementById("dealer4").innerHTML=newCard.value +' of ' + newCard.suit
+        }
+    }
+    function dealer_stand(){
+        setTimeout(declareWinner, 1000)
+        setTimeout(restart,2000)
+
+    }
+
+
+    
+
+  </script>
+</html>
